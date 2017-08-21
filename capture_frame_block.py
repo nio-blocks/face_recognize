@@ -1,12 +1,14 @@
-from nio.block.base import Block
-from nio.properties import VersionProperty, IntProperty, BoolProperty, StringProperty
-from nio.signal.base import Signal
-
 import cv2
 import pickle
 import base64
 import urllib.request
 import numpy
+
+from nio.block.base import Block
+from nio.properties import VersionProperty, IntProperty, BoolProperty, \
+    StringProperty
+from nio.signal.base import Signal
+
 
 class CaptureFrame(Block):
 
@@ -38,7 +40,10 @@ class CaptureFrame(Block):
                         done = True
                         jpg = ipbytes[a:b+2]
                         ipbytes= ipbytes[b+2:]
-                        frame = cv2.imdecode(numpy.fromstring(jpg, dtype=numpy.uint8), cv2.IMREAD_UNCHANGED)
+                        frame = cv2.imdecode(
+                            numpy.fromstring(jpg, dtype=numpy.uint8),
+                            cv2.IMREAD_UNCHANGED
+                        )
 
             else:
                 try:

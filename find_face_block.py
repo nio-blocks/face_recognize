@@ -1,14 +1,16 @@
-from nio.block.base import Block
-from nio.block.terminals import input
-from nio.properties import VersionProperty, BoolProperty, IntProperty, StringProperty, FloatProperty
-from nio.signal.base import Signal
-
 import face_recognition
 import cv2
 import pickle
 import base64
 import urllib.request
 import numpy
+
+from nio.block.base import Block
+from nio.block.terminals import input
+from nio.properties import VersionProperty, BoolProperty, IntProperty, \
+    StringProperty, FloatProperty
+from nio.signal.base import Signal
+
 
 @input('known')
 @input('unknown')
@@ -44,7 +46,8 @@ class FindFace(Block):
                     name = face['name']
                     for encoding in face['encoding']:
                         self.ref_names.append(name)
-                        self.ref_encodings.append(pickle.loads(base64.b64decode(encoding)))
+                        self.ref_encodings.append(
+                            pickle.loads(base64.b64decode(encoding)))
 
             if input_id == 'unknown':
                 if self.image():
@@ -70,7 +73,10 @@ class FindFace(Block):
                             done = True
                             jpg = ipbytes[a:b+2]
                             ipbytes= ipbytes[b+2:]
-                            frame = cv2.imdecode(numpy.fromstring(jpg, dtype=numpy.uint8), cv2.IMREAD_UNCHANGED)
+                            frame = cv2.imdecode(
+                                numpy.fromstring(jpg, dtype=numpy.uint8),
+                                cv2.IMREAD_UNCHANGED
+                            )
 
                 else:
                     # Grab a single frame from the webcam
@@ -83,11 +89,13 @@ class FindFace(Block):
                         break
 
                 # Resize frame to specified size
-                frame = cv2.resize(frame, (0,0), fx=self.frame_size(), fy=self.frame_size())
+                frame = cv2.resize(
+                    frame, (0,0), fx=self.frame_size(), fy=self.frame_size())
 
                 # Find all the faces and face encodings in the current frame of video
                 face_locations = face_recognition.face_locations(frame)
-                face_encodings = face_recognition.face_encodings(frame, face_locations)
+                face_encodings = face_recognition.face_encodings(
+                    frame, face_locations)
 
                 # Set a default signal if no faces are found
                 if self.location():
@@ -106,20 +114,29 @@ class FindFace(Block):
                 if len(face_encodings) > 0:
                     for e in range(len(face_encodings)):
                         # Compare unknown face with all known face encodings
-                        match = face_recognition.compare_faces(self.ref_encodings, face_encodings[e], self.accuracy())
+                        match = face_recognition.compare_faces(
+                            self.ref_encodings,
+                            face_encodings[e],
+                            self.accuracy()
+                        )
                         name = "Unknown"
 
-                        # Grab the name of the matched face
-                        for i in range(len(match)):
-                            if match[i]:
-                                name = self.ref_names[i]
+                    # Grab the name of the matched face
+                    for i in range(len(match)):
+                        if match[i]:
+                            name = self.ref_names[i]
 
                         names.append(name)
                         # Get the location and format it nicely
-                        location = [face_locations[e][0], face_locations[e][1], face_locations[e][2], face_locations[e][3]]
+                        location = [
+                            face_locations[e][0],
+                            face_locations[e][1],
+                            face_locations[e][2],
+                            face_locations[e][3]
+                        ]
                         locations.append(location)
 
-                    # Add list of found names (and locations) to the output signal
+                    # Add list of found names (and locations) to output signal
                     if self.location():
                         signal = Signal({
                             "found": names,
