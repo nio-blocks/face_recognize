@@ -19,6 +19,13 @@ Outputs
 Commands
 --------
 
+Dependencies
+------------
+- base64
+- numpy
+- opencv-python
+- pickle
+- urllib.requests
 
 FindFace
 ========
@@ -45,6 +52,15 @@ Outputs
 
 Commands
 --------
+
+Dependencies
+------------
+- base64
+- face_recognition
+- numpy
+- opencv-python
+- pickle
+- urllib.requests
 
 Input Example
 -------------
@@ -90,6 +106,12 @@ Outputs
 
 Commands
 --------
+
+Dependencies
+------------
+- base64
+- face_recognition
+- pickle
 
 Output Example
 --------------
