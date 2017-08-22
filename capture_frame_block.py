@@ -1,12 +1,14 @@
-from nio.block.base import Block
-from nio.properties import VersionProperty, IntProperty, BoolProperty, StringProperty
-from nio.signal.base import Signal
-
 import cv2
 import pickle
 import base64
 import urllib.request
 import numpy
+
+from nio.block.base import Block
+from nio.properties import VersionProperty, IntProperty, BoolProperty, \
+    StringProperty
+from nio.signal.base import Signal
+
 
 class CaptureFrame(Block):
 
@@ -31,14 +33,17 @@ class CaptureFrame(Block):
                 stream = urllib.request.urlopen(self.ipcam_address())
                 ipbytes = bytes()
                 while not done:
-                    ipbytes+=stream.read(1024)
+                    ipbytes += stream.read(1024)
                     a = ipbytes.find(b'\xff\xd8')
                     b = ipbytes.find(b'\xff\xd9')
-                    if a!=-1 and b!=-1:
+                    if a != -1 and b != -1:
                         done = True
                         jpg = ipbytes[a:b+2]
-                        ipbytes= ipbytes[b+2:]
-                        frame = cv2.imdecode(numpy.fromstring(jpg, dtype=numpy.uint8), cv2.IMREAD_UNCHANGED)
+                        ipbytes = ipbytes[b+2:]
+                        frame = cv2.imdecode(
+                            numpy.fromstring(jpg, dtype=numpy.uint8),
+                            cv2.IMREAD_UNCHANGED
+                        )
 
             else:
                 try:
