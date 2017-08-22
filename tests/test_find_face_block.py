@@ -60,3 +60,5 @@ class TestFindFace(NIOBlockTestCase):
             self.assert_last_signal_list_notified(
                 [Signal({'found': ['Billy', 'Bob']})])
             blk.stop()
+
+        # Does this also need to test when self.ipcam() = True?

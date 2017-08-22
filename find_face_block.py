@@ -66,13 +66,13 @@ class FindFace(Block):
                         break
                     ipbytes = bytes()
                     while not done:
-                        ipbytes+=stream.read(1024)
+                        ipbytes += stream.read(1024)
                         a = ipbytes.find(b'\xff\xd8')
                         b = ipbytes.find(b'\xff\xd9')
-                        if a!=-1 and b!=-1:
+                        if a != -1 and b != -1:
                             done = True
                             jpg = ipbytes[a:b+2]
-                            ipbytes= ipbytes[b+2:]
+                            ipbytes = ipbytes[b+2:]
                             frame = cv2.imdecode(
                                 numpy.fromstring(jpg, dtype=numpy.uint8),
                                 cv2.IMREAD_UNCHANGED
@@ -90,9 +90,9 @@ class FindFace(Block):
 
                 # Resize frame to specified size
                 frame = cv2.resize(
-                    frame, (0,0), fx=self.frame_size(), fy=self.frame_size())
+                    frame, (0, 0), fx=self.frame_size(), fy=self.frame_size())
 
-                # Find all the faces and face encodings in the current frame of video
+                # Find all faces and face encodings in current frame of video
                 face_locations = face_recognition.face_locations(frame)
                 face_encodings = face_recognition.face_encodings(
                     frame, face_locations)
@@ -101,13 +101,12 @@ class FindFace(Block):
                 if self.location():
                     signal = Signal({
                         "found": ["None"],
-                        "location": [[0,0,0,0]]
+                        "location": [[0, 0, 0, 0]]
                     })
                 else:
                     signal = Signal({
                         "found": ["None"]
                     })
-
 
                 names = []
                 locations = []

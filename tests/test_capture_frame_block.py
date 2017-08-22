@@ -14,17 +14,17 @@ class TestCaptureFrame(NIOBlockTestCase):
         global CaptureFrame
 
     def test_capture_frame(self):
-
         blk = CaptureFrame()
-        with patch(CaptureFrame.__module__ + '.cv2.VideoCapture') as mock_video_capture, \
+        with patch(CaptureFrame.__module__ + '.cv2.VideoCapture') as \
+                mock_video_capture, \
                 patch(CaptureFrame.__module__ + '.base64') as mock_base64:
-            mock_video_capture.return_value.read.return_value = 'bytes', 'frameBytes'
+            mock_video_capture.return_value.read.return_value = \
+                'bytes', 'frameBytes'
             mock_base64.b64encode.return_value.decode.return_value = 'signal'
 
             self.configure_block(blk, {})
             blk.start()
             blk.process_signals([Signal()])
-
             self.assert_num_signals_notified(1)
             self.assert_last_signal_notified(Signal({
                 'capture': 'signal'
