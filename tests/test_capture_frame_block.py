@@ -46,9 +46,11 @@ class TestCaptureFrame(NIOBlockTestCase):
 
             blk.start()
             self.configure_block(blk, {
-                'ipcam': True
+                'ipcam': True,
+                'ipcam_address': 'ipcamAddress'
             })
             blk.process_signals([Signal({})])
+            mock_urllib_request.urlopen.assert_called_once_with('ipcamAddress')
             self.assert_num_signals_notified(1)
             self.assert_last_signal_notified(Signal({
                 'capture': 'mockEnco'

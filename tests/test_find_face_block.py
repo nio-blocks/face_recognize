@@ -79,10 +79,12 @@ class TestFindFace(NIOBlockTestCase):
             mock_face.compare_faces.return_value = ['Billy', 'Bob']
 
             self.configure_block(blk, {
-                'ipcam': True
+                'ipcam': True,
+                'ipcam_address': 'ipcamAddress'
             })
             blk.start()
             blk.process_signals([Signal({})], input_id='unknown')
+            mock_urllib_request.urlopen.assert_called_once_with('ipcamAddress')
             self.assert_num_signals_notified(1)
             self.assert_last_signal_list_notified(
                 [Signal({'found': ['Billy', 'Bob']})])
