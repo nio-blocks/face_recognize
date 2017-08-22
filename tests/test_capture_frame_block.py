@@ -44,13 +44,11 @@ class TestCaptureFrame(NIOBlockTestCase):
             mock_cv2_imdecode.return_value = 'mockFrame'
             mock_base64.b64encode.return_value.decode.return_value = 'mockEnco'
 
-
             blk.start()
             self.configure_block(blk, {
                 'ipcam': True
             })
             blk.process_signals([Signal({})])
-
             self.assert_num_signals_notified(1)
             self.assert_last_signal_notified(Signal({
                 'capture': 'mockEnco'

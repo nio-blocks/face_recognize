@@ -87,4 +87,3 @@ class TestFindFace(NIOBlockTestCase):
             self.assert_last_signal_list_notified(
                 [Signal({'found': ['Billy', 'Bob']})])
             blk.stop()
-

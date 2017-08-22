@@ -15,10 +15,7 @@ class GetEncodingFromFile(Block):
     sname = StringProperty(title='Save Name', default='')
     version = VersionProperty('2.0.0')
 
-    def __init__(self):
-        super().__init__()
-
-    def save_encoding(self, file_path, save_name, user_id, file2_path=None):
+    def save_encoding(self, file_path, save_name, user_id):
         serialized_encoding = []
 
         for f in file_path:
