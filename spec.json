@@ -98,7 +98,7 @@
   },
   "nio/GetEncodingFromFile": {
     "version": "2.0.0",
-    "description": "A block for running mongo commands",
+    "description": "Load face image file and serialize the encoding.",
     "properties": {
       "image_paths": {
         "title": "Image Path",
@@ -121,7 +121,7 @@
     },
     "inputs": {
       "default": {
-        "description": "Any list of signals."
+        "description": "Any list of signals with the path to the face image."
       }
     },
     "outputs": {

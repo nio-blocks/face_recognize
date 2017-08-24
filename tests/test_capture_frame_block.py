@@ -55,3 +55,4 @@ class TestCaptureFrame(NIOBlockTestCase):
             self.assert_last_signal_notified(Signal({
                 'capture': 'mockEnco'
             }))
+            blk.stop()
