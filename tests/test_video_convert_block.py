@@ -10,7 +10,7 @@ class TestVideoConvert(NIOBlockTestCase):
     def setUp(self):
         super().setUp()
         sys.modules['cv2'] = MagicMock()
-        from ..video_convert_block import VideoConvert
+        from ..video_stream.video_convert_block import VideoConvert
         global VideoConvert
 
     def test_video_convert(self):

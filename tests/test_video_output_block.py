@@ -10,7 +10,7 @@ class TestVideoOutput(NIOBlockTestCase):
     def setUp(self):
         super().setUp()
         sys.modules['cv2'] = MagicMock()
-        from ..video_output_block import VideoOutput
+        from ..video_stream.video_output_block import VideoOutput
         global VideoOutput
 
     def test_video_output(self):

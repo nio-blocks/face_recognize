@@ -10,7 +10,7 @@ class TestVideoSave(NIOBlockTestCase):
     def setUp(self):
         super().setUp()
         sys.modules['cv2'] = MagicMock()
-        from ..video_save_block import VideoSave
+        from ..video_stream.video_save_block import VideoSave
         global VideoSave
 
     def test_video_save(self):

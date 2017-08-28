@@ -11,7 +11,7 @@ class TestFindFace(NIOBlockTestCase):
         super().setUp()
         sys.modules['cv2'] = MagicMock()
         sys.modules['face_recognition'] = MagicMock()
-        from ..find_face_block import FindFace
+        from ..face_recognize.find_face_block import FindFace
         global FindFace
 
     def test_face_find_known_input(self):

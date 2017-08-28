@@ -11,7 +11,7 @@ class TestTrackObjects(NIOBlockTestCase):
         super().setUp()
         sys.modules['cv2'] = MagicMock()
         sys.modules['imutils'] = MagicMock()
-        from ..track_objects_block import TrackObjects
+        from ..object_tracker.track_objects_block import TrackObjects
         global TrackObjects
 
     def test_track_one_object(self):

@@ -10,7 +10,7 @@ class TestCaptureFrame(NIOBlockTestCase):
     def setUp(self):
         super().setUp()
         sys.modules['cv2'] = MagicMock()
-        from ..capture_frame_block import CaptureFrame
+        from ..face_recognize.capture_frame_block import CaptureFrame
         global CaptureFrame
 
     def test_capture_frame(self):

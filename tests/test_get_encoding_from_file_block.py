@@ -10,7 +10,8 @@ class TestCaptureFrame(NIOBlockTestCase):
     def setUp(self):
         super().setUp()
         sys.modules['face_recognition'] = MagicMock()
-        from ..get_encoding_from_file_block import GetEncodingFromFile
+        from ..face_recognize.get_encoding_from_file_block import \
+            GetEncodingFromFile
         global GetEncodingFromFile
 
     def test_get_encoding_from_file(self):
