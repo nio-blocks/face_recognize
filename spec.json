@@ -2,6 +2,9 @@
   "nio/CaptureFrame": {
     "version": "2.0.0",
     "description": "Grab a frame of video from a specified camera and send the frame data as a signal.",
+    "categories": [
+      "Machine Learning"
+    ],
     "properties": {
       "camera": {
         "title": "Camera Index",
@@ -37,6 +40,9 @@
   "nio/FindFace": {
     "version": "2.0.0",
     "description": "Grab a frame of video from a specified camera, find a face encoding within the frame, compare the encoding with encoding of known faces from an input signal, output a signal containing the name of the found face.",
+    "categories": [
+      "Machine Learning"
+    ],
     "properties": {
       "accuracy": {
         "title": "Comparison Accuracy",
@@ -99,6 +105,9 @@
   "nio/GetEncodingFromFile": {
     "version": "2.0.0",
     "description": "Load face image file and serialize the encoding.",
+    "categories": [
+      "Machine Learning"
+    ],
     "properties": {
       "image_paths": {
         "title": "Image Path",
