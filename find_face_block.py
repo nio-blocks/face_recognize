@@ -6,6 +6,7 @@ import urllib.request
 import numpy
 
 from nio.block.base import Block
+from nio.block.mixins.enrich.enrich_signals import EnrichSignals
 from nio.block.terminals import input
 from nio.properties import VersionProperty, BoolProperty, IntProperty, \
     StringProperty, FloatProperty
@@ -14,7 +15,7 @@ from nio.signal.base import Signal
 
 @input('known')
 @input('unknown')
-class FindFace(Block):
+class FindFace(EnrichSignals, Block):
 
     version = VersionProperty('2.0.0')
     accuracy = FloatProperty(title='Comparison Accuracy', default=0.6)
@@ -37,9 +38,8 @@ class FindFace(Block):
             self.video_capture = cv2.VideoCapture(self.camera())
 
     def process_signals(self, signals, input_id):
-
-        for signal in signals:
-            if input_id == 'known':
+        if input_id == 'known':
+            for signal in signals:
                 self.ref_names = []
                 self.ref_encodings = []
                 for face in signal.faces:
@@ -49,13 +49,12 @@ class FindFace(Block):
                         self.ref_encodings.append(
                             pickle.loads(base64.b64decode(encoding)))
 
-            if input_id == 'unknown':
+        if input_id == 'unknown':
+            new_signals = []
+            for signal in signals:
                 if self.image():
-                    # Load in an image frame
-                    try:
-                        frame = pickle.loads(signal.capture)
-                    except TypeError:
-                        frame = pickle.loads(base64.b64decode(signal.capture))
+                    # Load in an image frame from RGB jpeg
+                    frame = cv2.cvtColor(numpy.array(signal.capture), cv2.COLOR_RGB2BGR)
 
                 elif self.ipcam():
                     # Download a jpeg frame from the camera
@@ -99,14 +98,11 @@ class FindFace(Block):
 
                 # Set a default signal if no faces are found
                 if self.location():
-                    signal = Signal({
-                        "found": ["None"],
-                        "location": [[0, 0, 0, 0]]
-                    })
+                    new_signals.append(self.get_output_signal(
+                        {"found": ["None"], "location": [[0, 0, 0, 0]]}, signal))
                 else:
-                    signal = Signal({
-                        "found": ["None"]
-                    })
+                    new_signals.append(self.get_output_signal(
+                        {"found": ["None"]}, signal))
 
                 names = []
                 locations = []
@@ -137,13 +133,9 @@ class FindFace(Block):
 
                     # Add list of found names (and locations) to output signal
                     if self.location():
-                        signal = Signal({
-                            "found": names,
-                            "location": locations
-                        })
+                        new_signals.append(self.get_output_signal(
+                            {"found": names, "location": locations}, signal))
                     else:
-                        signal = Signal({
-                            "found": names
-                        })
-
-                self.notify_signals([signal])
+                        new_signals.append(self.get_output_signal(
+                            {"found": names}, signal))
+            self.notify_signals(new_signals)
