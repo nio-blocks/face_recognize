@@ -98,11 +98,10 @@ class FindFace(EnrichSignals, Block):
 
                 # Set a default signal if no faces are found
                 if self.location():
-                    new_signals.append(self.get_output_signal(
-                        {"found": ["None"], "location": [[0, 0, 0, 0]]}, signal))
+                    out = self.get_output_signal(
+                        {"found": ["None"], "location": [[0, 0, 0, 0]]}, signal)
                 else:
-                    new_signals.append(self.get_output_signal(
-                        {"found": ["None"]}, signal))
+                    out = self.get_output_signal({"found": ["None"]}, signal)
 
                 names = []
                 locations = []
@@ -133,9 +132,9 @@ class FindFace(EnrichSignals, Block):
 
                     # Add list of found names (and locations) to output signal
                     if self.location():
-                        new_signals.append(self.get_output_signal(
-                            {"found": names, "location": locations}, signal))
+                        out = self.get_output_signal(
+                            {"found": names, "location": locations}, signal)
                     else:
-                        new_signals.append(self.get_output_signal(
-                            {"found": names}, signal))
+                        out = self.get_output_signal({"found": names}, signal)
+                new_signals.append(out)
             self.notify_signals(new_signals)
