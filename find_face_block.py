@@ -1,45 +1,32 @@
 import face_recognition
-import cv2
 import pickle
 import base64
-import urllib.request
 import numpy
 
 from nio.block.base import Block
+from nio.block.mixins.enrich.enrich_signals import EnrichSignals
 from nio.block.terminals import input
-from nio.properties import VersionProperty, BoolProperty, IntProperty, \
-    StringProperty, FloatProperty
-from nio.signal.base import Signal
+from nio.properties import VersionProperty, BoolProperty, Property, \
+                            FloatProperty
 
 
 @input('known')
 @input('unknown')
-class FindFace(Block):
+class FindFace(EnrichSignals, Block):
 
     version = VersionProperty('2.0.0')
     accuracy = FloatProperty(title='Comparison Accuracy', default=0.6)
-    camera = IntProperty(title='Camera Index', default=0)
-    frame_size = FloatProperty(title='Frame Size', default=1.0)
-    image = BoolProperty(title='Input Image', default=False)
-    ipcam = BoolProperty(title='IP Camera', default=False)
-    ipcam_address = StringProperty(title='IP Camera Address', default='')
     location = BoolProperty(title='Output Face Location', default=False)
+    capture = Property(title='Image', default='{ $frame }')
 
     def __init__(self):
         super().__init__()
-        self.video_capture = None
         self.ref_names = []
         self.ref_encodings = []
 
-    def start(self):
-        if (not self.image() and not self.ipcam()):
-            # Establish connection with usb camera if it's used
-            self.video_capture = cv2.VideoCapture(self.camera())
-
     def process_signals(self, signals, input_id):
-
-        for signal in signals:
-            if input_id == 'known':
+        if input_id == 'known':
+            for signal in signals:
                 self.ref_names = []
                 self.ref_encodings = []
                 for face in signal.faces:
@@ -49,64 +36,20 @@ class FindFace(Block):
                         self.ref_encodings.append(
                             pickle.loads(base64.b64decode(encoding)))
 
-            if input_id == 'unknown':
-                if self.image():
-                    # Load in an image frame
-                    try:
-                        frame = pickle.loads(signal.capture)
-                    except TypeError:
-                        frame = pickle.loads(base64.b64decode(signal.capture))
-
-                elif self.ipcam():
-                    # Download a jpeg frame from the camera
-                    done = False
-                    try:
-                        stream = urllib.request.urlopen(self.ipcam_address())
-                    except:
-                        break
-                    ipbytes = bytes()
-                    while not done:
-                        ipbytes += stream.read(1024)
-                        a = ipbytes.find(b'\xff\xd8')
-                        b = ipbytes.find(b'\xff\xd9')
-                        if a != -1 and b != -1:
-                            done = True
-                            jpg = ipbytes[a:b+2]
-                            ipbytes = ipbytes[b+2:]
-                            frame = cv2.imdecode(
-                                numpy.fromstring(jpg, dtype=numpy.uint8),
-                                cv2.IMREAD_UNCHANGED
-                            )
-
-                else:
-                    # Grab a single frame from the webcam
-                    try:
-                        ret, frame = self.video_capture.read()
-                    except:
-                        break
-
-                    if (not ret):
-                        break
-
-                # Resize frame to specified size
-                frame = cv2.resize(
-                    frame, (0, 0), fx=self.frame_size(), fy=self.frame_size())
-
-                # Find all faces and face encodings in current frame of video
+        if input_id == 'unknown':
+            new_signals = []
+            for signal in signals:
+                frame = numpy.array(self.capture(signal))
                 face_locations = face_recognition.face_locations(frame)
                 face_encodings = face_recognition.face_encodings(
                     frame, face_locations)
 
                 # Set a default signal if no faces are found
                 if self.location():
-                    signal = Signal({
-                        "found": ["None"],
-                        "location": [[0, 0, 0, 0]]
-                    })
+                    out = self.get_output_signal(
+                        {'found': ['None'], 'location': [[0, 0, 0, 0]]}, signal)
                 else:
-                    signal = Signal({
-                        "found": ["None"]
-                    })
+                    out = self.get_output_signal({'found': ['None']}, signal)
 
                 names = []
                 locations = []
@@ -118,7 +61,7 @@ class FindFace(Block):
                             face_encodings[e],
                             self.accuracy()
                         )
-                        name = "Unknown"
+                        name = 'Unknown'
 
                     # Grab the name of the matched face
                     for i in range(len(match)):
@@ -137,13 +80,9 @@ class FindFace(Block):
 
                     # Add list of found names (and locations) to output signal
                     if self.location():
-                        signal = Signal({
-                            "found": names,
-                            "location": locations
-                        })
+                        out = self.get_output_signal(
+                            {'found': names, 'location': locations}, signal)
                     else:
-                        signal = Signal({
-                            "found": names
-                        })
-
-                self.notify_signals([signal])
+                        out = self.get_output_signal({'found': names}, signal)
+                new_signals.append(out)
+            self.notify_signals(new_signals)

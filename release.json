@@ -1,17 +1,12 @@
 {
-  "nio/CaptureFrame": {
-    "language": "Python",
-    "version": "2.0.0",
-    "url": "git://github.com/nio-blocks/face_recognize.git"
-  },
   "nio/FindFace": {
     "language": "Python",
-    "version": "2.0.0",
-    "url": "git://github.com/nio-blocks/face_recognize.git"
+    "url": "git://github.com/nio-blocks/face_recognize.git",
+    "version": "2.0.0"
   },
   "nio/GetEncodingFromFile": {
     "language": "Python",
-    "version": "2.0.0",
-    "url": "git://github.com/nio-blocks/face_recognize.git"
+    "url": "git://github.com/nio-blocks/face_recognize.git",
+    "version": "2.0.0"
   }
 }

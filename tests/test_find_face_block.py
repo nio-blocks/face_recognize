@@ -43,48 +43,15 @@ class TestFindFace(NIOBlockTestCase):
     def test_face_find_unknown_input(self):
         blk = FindFace()
         blk.ref_names = ['Billy', 'Bob']
-        with patch(FindFace.__module__ + '.cv2.VideoCapture') as \
-                mock_video_capture, \
-                patch(FindFace.__module__ + '.base64') as mock_base64, \
+        with patch(FindFace.__module__ + '.base64') as mock_base64, \
                 patch(FindFace.__module__ + '.face_recognition') as mock_face:
-            mock_video_capture.return_value.read.return_value = \
-                'bytes', 'frameBytes'
             mock_base64.b64encode.return_value.decode.return_value = 'signal'
             mock_face.face_encodings.return_value = ['encode1', 'encode2']
             mock_face.compare_faces.return_value = ['Billy', 'Bob']
 
             self.configure_block(blk, {})
             blk.start()
-            blk.process_signals([Signal({})], input_id='unknown')
-            self.assert_num_signals_notified(1)
-            self.assert_last_signal_list_notified(
-                [Signal({'found': ['Billy', 'Bob']})])
-            blk.stop()
-
-    def test_face_find_unknown_input_ipcam(self):
-        blk = FindFace()
-        blk.ref_names = ['Billy', 'Bob']
-        with patch(FindFace.__module__ + '.urllib.request') as \
-                mock_urllib_request, \
-                patch(FindFace.__module__ + '.cv2.imdecode') as \
-                mock_cv2_imdecode, \
-                patch(FindFace.__module__ + '.numpy.fromstring') as \
-                mock_numpy_formstring, \
-                patch(FindFace.__module__ + '.face_recognition') as mock_face,\
-                patch(FindFace.__module__ + '.base64') as mock_base64:
-            mock_urllib_request.return_value.urlopen.return_value = 'mockStrea'
-            mock_cv2_imdecode.return_value = 'mockFrame'
-            mock_base64.b64encode.return_value.decode.return_value = 'mockEnco'
-            mock_face.face_encodings.return_value = ['encode1', 'encode2']
-            mock_face.compare_faces.return_value = ['Billy', 'Bob']
-
-            self.configure_block(blk, {
-                'ipcam': True,
-                'ipcam_address': 'ipcamAddress'
-            })
-            blk.start()
-            blk.process_signals([Signal({})], input_id='unknown')
-            mock_urllib_request.urlopen.assert_called_once_with('ipcamAddress')
+            blk.process_signals([Signal()], input_id='unknown')
             self.assert_num_signals_notified(1)
             self.assert_last_signal_list_notified(
                 [Signal({'found': ['Billy', 'Bob']})])

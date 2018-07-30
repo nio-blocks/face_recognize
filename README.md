@@ -1,60 +1,30 @@
-CaptureFrame
-============
-Grab a frame of video from a specified camera and send the frame data as a signal.
-
-Properties
-----------
-- **camera**: Where to find the local camera to read from.
-- **ipcam**: Whether or not to use an IP Camera.
-- **ipcam_address**: Address for where to find the IP camera.
-
-Inputs
-------
-- **default**: Any signal to trigger a frame being grabbed from the specified camera.
-
-Outputs
--------
-- **default**: A signal containing the serialized and stringified video frame.
-
-Commands
---------
-
-Dependencies
-------------
-- numpy
-- opencv-python
-
 FindFace
 ========
-Grab a frame of video from a specified camera, find a face encoding within the frame, compare the encoding with encoding of known faces from an input signal, output a signal containing the name of the found face.
+Find a face encoding within a frame from an incoming signal, compare the encoding with encoding of known faces from an input signal, output a signal containing the name of the found face.
 
 Properties
 ----------
-- **accuracy**: Degree of confidence to shoot for when finding faces.
-- **camera**: Where to find the local camera to read from.
-- **frame_size**: Scaling factor for frame.
-- **image**: Whether or not to use an IP Camera.
-- **ipcam**: Whether or not to use an IP Camera.
-- **ipcam_address**: Address for where to find the IP camera.
+- **accuracy**: Degree of confidence for finding faces.
+- **enrich**: 
 - **location**: Include coordinate location of face on output signal.
 
 Inputs
 ------
 - **known**: Signal to add the known face encodings and names to compare found faces against. Expects a 'faces' object which contains a list of objects with attributes 'name', 'user_id', 'id', and 'encoding'.
-- **unknown**: Signal to begin collecting frames from the camera and search for faces.
+- **unknown**: Signal to with an image to search for faces.
 
 Outputs
 -------
-- **default**: A signal containing the name of the face identified from the webcam.
+- **default**: A signal containing the name of the identified face.
 
 Commands
 --------
+None
 
 Dependencies
 ------------
 - face_recognition
 - numpy
-- opencv-python
 
 Input Example
 -------------
@@ -79,10 +49,11 @@ Output Example
 }
 ```
 
+***
 
 GetEncodingFromFile
 ===================
-A block for running mongo commands
+Load face image file and serialize the encoding.
 
 Properties
 ----------
@@ -92,7 +63,7 @@ Properties
 
 Inputs
 ------
-- **default**: Any list of signals.
+- **default**: Any list of signals with the path to the face image.
 
 Outputs
 -------
@@ -100,6 +71,7 @@ Outputs
 
 Commands
 --------
+None
 
 Dependencies
 ------------
@@ -114,3 +86,4 @@ Output Example
  'user_id': 'bobama'
 }
 ```
+

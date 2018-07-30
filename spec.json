@@ -1,45 +1,7 @@
 {
-  "nio/CaptureFrame": {
-    "version": "2.0.0",
-    "description": "Grab a frame of video from a specified camera and send the frame data as a signal.",
-    "categories": [
-      "Machine Learning"
-    ],
-    "properties": {
-      "camera": {
-        "title": "Camera Index",
-        "type": "IntType",
-        "description": "Where to find the local camera to read from.",
-        "default": 0
-      },
-      "ipcam": {
-        "title": "Use IP Camera?",
-        "type": "BoolType",
-        "description": "Whether or not to use an IP Camera.",
-        "default": false
-      },
-      "ipcam_address": {
-        "title": "IP Camera Address",
-        "type": "StringType",
-        "description": "Address for where to find the IP camera.",
-        "default": ""
-      }
-    },
-    "inputs": {
-      "default": {
-        "description": "Any signal to trigger a frame being grabbed from the specified camera."
-      }
-    },
-    "outputs": {
-      "default": {
-        "description": "A signal containing the serialized and stringified video frame."
-      }
-    },
-    "commands": {}
-  },
   "nio/FindFace": {
     "version": "2.0.0",
-    "description": "Grab a frame of video from a specified camera, find a face encoding within the frame, compare the encoding with encoding of known faces from an input signal, output a signal containing the name of the found face.",
+    "description": "Find a face encoding within a frame from an incoming signal, compare the encoding with encoding of known faces from an input signal, output a signal containing the name of the found face.",
     "categories": [
       "Machine Learning"
     ],
@@ -47,38 +9,17 @@
       "accuracy": {
         "title": "Comparison Accuracy",
         "type": "FloatType",
-        "description": "Degree of confidence to shoot for when finding faces.",
+        "description": "Degree of confidence for finding faces.",
         "default": 0.6
       },
-      "camera": {
-        "title": "Camera Index",
-        "type": "IntType",
-        "description": "Where to find the local camera to read from.",
-        "default": 0
-      },
-      "frame_size": {
-        "title": "Frame Size",
-        "type": "FloatType",
-        "description": "Scaling factor for frame.",
-        "default": 1.0
-      },
-      "image": {
-        "title": "Input Image",
-        "type": "BoolType",
-        "description": "Whether or not to use an IP Camera.",
-        "default": false
-      },
-      "ipcam": {
-        "title": "IP Camera",
-        "type": "BoolType",
-        "description": "Whether or not to use an IP Camera.",
-        "default": false
-      },
-      "ipcam_address": {
-        "title": "IP Camera Address",
-        "type": "StringType",
-        "description": "Address for where to find the IP camera.",
-        "default": ""
+      "enrich": {
+        "title": "Signal Enrichment",
+        "type": "ObjectType",
+        "description": "",
+        "default": {
+          "enrich_field": "",
+          "exclude_existing": true
+        }
       },
       "location": {
         "title": "Output Face Location",
@@ -92,7 +33,7 @@
         "description": "Signal to add the known face encodings and names to compare found faces against. Expects a 'faces' object which contains a list of objects with attributes 'name', 'user_id', 'id', and 'encoding'."
       },
       "unknown": {
-        "description": "Signal to begin collecting frames from the camera and search for faces."
+        "description": "Signal to with an image to search for faces."
       }
     },
     "outputs": {
@@ -125,7 +66,7 @@
         "title": "User ID",
         "type": "StringType",
         "description": "Id of the face being added to the database.",
-        "default": ""
+        "default": null
       }
     },
     "inputs": {
