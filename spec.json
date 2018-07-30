@@ -44,7 +44,7 @@
     "commands": {}
   },
   "nio/GetEncodingFromFile": {
-    "version": "2.0.0",
+    "version": "2.1.0",
     "description": "Load face image file and serialize the encoding.",
     "categories": [
       "Machine Learning"

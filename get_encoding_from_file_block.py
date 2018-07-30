@@ -13,7 +13,7 @@ class GetEncodingFromFile(Block):
     image_paths = ListProperty(StringType, title='Image Path', default=[])
     uid = StringProperty(title='User ID', defult='')
     sname = StringProperty(title='Save Name', default='')
-    version = VersionProperty('2.0.0')
+    version = VersionProperty("2.1.0")
 
     def save_encoding(self, file_path, save_name, user_id):
         serialized_encoding = []
