@@ -51,7 +51,8 @@ class TestFindFace(NIOBlockTestCase):
 
             self.configure_block(blk, {})
             blk.start()
-            blk.process_signals([Signal()], input_id='unknown')
+            blk.process_signals(
+                [Signal({'frame': MagicMock()})], input_id='unknown')
             self.assert_num_signals_notified(1)
             self.assert_last_signal_list_notified(
                 [Signal({'found': ['Billy', 'Bob']})])

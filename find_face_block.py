@@ -17,7 +17,7 @@ class FindFace(EnrichSignals, Block):
     version = VersionProperty("2.1.0")
     accuracy = FloatProperty(title='Comparison Accuracy', default=0.6)
     location = BoolProperty(title='Output Face Location', default=False)
-    capture = Property(title='Image', default='{ $frame }')
+    capture = Property(title='Image', default='{{ $frame }}')
 
     def __init__(self):
         super().__init__()
