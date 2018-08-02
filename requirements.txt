@@ -1,2 +1,2 @@
-numpy
-face_recognition
+numpy~=1.15
+face_recognition~=1.2
