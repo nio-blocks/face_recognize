@@ -12,6 +12,12 @@
         "description": "Degree of confidence for finding faces.",
         "default": 0.6
       },
+      "capture": {
+        "title": "Image",
+        "type": "Type",
+        "description": "The frame (or image) to compare to the known faces.",
+        "default": "{{ $frame }}"
+      },
       "enrich": {
         "title": "Signal Enrichment",
         "type": "ObjectType",
@@ -38,7 +44,7 @@
     },
     "outputs": {
       "default": {
-        "description": "A signal containing the name of the face identified from the webcam."
+        "description": "A signal containing the name of the identified face."
       }
     },
     "commands": {}

@@ -5,6 +5,7 @@ Find a face encoding within a frame from an incoming signal, compare the encodin
 Properties
 ----------
 - **accuracy**: Degree of confidence for finding faces.
+- **capture**: The frame (or image) to compare to the known faces.
 - **enrich**: 
 - **location**: Include coordinate location of face on output signal.
 
