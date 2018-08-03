@@ -14,7 +14,7 @@ from nio.properties import VersionProperty, BoolProperty, Property, \
 @input('unknown')
 class FindFace(EnrichSignals, Block):
 
-    version = VersionProperty("2.1.0")
+    version = VersionProperty("2.1.1")
     accuracy = FloatProperty(title='Comparison Accuracy', default=0.6)
     location = BoolProperty(title='Output Face Location', default=False)
     capture = Property(title='Image', default='{{ $frame }}')

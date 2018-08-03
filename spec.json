@@ -1,6 +1,6 @@
 {
   "nio/FindFace": {
-    "version": "2.1.0",
+    "version": "2.1.1",
     "description": "Find a face encoding within a frame from an incoming signal, compare the encoding with encoding of known faces from an input signal, output a signal containing the name of the found face.",
     "categories": [
       "Machine Learning"

@@ -2,7 +2,7 @@
   "nio/FindFace": {
     "language": "Python",
     "url": "git://github.com/nio-blocks/face_recognize.git",
-    "version": "2.1.0"
+    "version": "2.1.1"
   },
   "nio/GetEncodingFromFile": {
     "language": "Python",
