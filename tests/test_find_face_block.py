@@ -13,7 +13,7 @@ class TestFindFace(NIOBlockTestCase):
         .the signal
         """
         dummy_frame = Mock()
-        dummy_locations = [Mock()]  # list of tuples (top, right, bottom, left)
+        dummy_locations = [('T', 'R', 'B', 'L')]
         mock_face.face_locations.return_value = dummy_locations
 
         blk = FindFace()
@@ -26,5 +26,5 @@ class TestFindFace(NIOBlockTestCase):
         mock_face.face_locations.assert_called_once_with(dummy_frame)
         self.assert_num_signals_notified(1)
         self.assert_last_signal_list_notified([
-            Signal({'frame': dummy_frame, 'faces': dummy_locations}),
+            Signal({'frame': dummy_frame, 'faces': [('L', 'T', 'R', 'B')]}),
         ])

@@ -11,5 +11,11 @@ class FindFace(EnrichSignals, Block):
 
     def process_signal(self, signal):
         face_locations = face_recognition.face_locations(signal.frame)
-        signal.faces = face_locations
+        # bounding boxes are (top, right, bottom, left)
+        # pil blocks use (left, upper, right, lower)
+        locations = []
+        for location in face_locations:
+            locations.append(
+                (location[3], location[0], location[1], location[2]))
+        signal.faces = locations
         return signal
