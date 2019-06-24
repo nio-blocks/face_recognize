@@ -17,13 +17,15 @@ class TestFindFace(NIOBlockTestCase):
         mock_face.face_locations.return_value = dummy_locations
 
         blk = FindFace()
-        self.configure_block(blk, {})
+        self.configure_block(blk, {
+            'upsample': 7,
+        })
         blk.start()
         blk.process_signals([
             Signal({'frame': dummy_frame}),
         ])
         blk.stop()
-        mock_face.face_locations.assert_called_once_with(dummy_frame)
+        mock_face.face_locations.assert_called_once_with(dummy_frame, 7)
         self.assert_num_signals_notified(1)
         self.assert_last_signal_list_notified([
             Signal({'frame': dummy_frame, 'faces': [('L', 'T', 'R', 'B')]}),
