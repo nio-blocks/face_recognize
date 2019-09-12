@@ -1,5 +1,31 @@
 {
-  "nio/FindFace": {
+  "nio/IdentifyFace": {
+    "version": "2.1.1",
+    "description": "Find a face encoding within a frame from an incoming signal, compare the encoding with encoding of known faces from an input signal, output a signal containing the name of the found face.",
+    "categories": [
+      "Machine Learning"
+    ],
+    "properties": {
+      "upsample": {
+        "title": "Number of Times to Upsample",
+        "type": "FloatType",
+        "description": "Increase accuracy at the cost of speed, 0 is the fastest.",
+        "default": 1
+      }
+    },
+    "inputs": {
+      "default": {
+        "description": "any list of signals with $frame attribute."
+      }
+    },
+    "outputs": {
+      "default": {
+        "description": "A signal containing the location of the found faces."
+      }
+    },
+    "commands": {}
+  },
+  "nio/IdentifyFace": {
     "version": "2.1.1",
     "description": "Find a face encoding within a frame from an incoming signal, compare the encoding with encoding of known faces from an input signal, output a signal containing the name of the found face.",
     "categories": [
