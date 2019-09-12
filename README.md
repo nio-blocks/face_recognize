@@ -1,4 +1,28 @@
 FindFace
+===
+For every input image array, output a list of found faces as bounding boxes `(left, upper, right, lower)` edges.
+
+Properties
+----------
+- **upsample**: Nummber of times toupsample image. Increases accuracy at the cost of peroformance, set to 0 for fastest results.
+
+Inputs
+------
+- **default**: any list of signals with `$frame` attribute.
+
+Outputs
+-------
+- **default**: A signal containing the location of the found faces.
+
+Commands
+--------
+None
+
+Dependencies
+------------
+- face_recognition
+
+IdentifyFace
 ========
 Find a face encoding within a frame from an incoming signal, compare the encoding with encoding of known faces from an input signal, output a signal containing the name of the found face.
 
@@ -6,7 +30,7 @@ Properties
 ----------
 - **accuracy**: Degree of confidence for finding faces.
 - **capture**: The frame (or image) to compare to the known faces.
-- **enrich**: 
+- **enrich**:
 - **location**: Include coordinate location of face on output signal.
 
 Inputs
@@ -87,4 +111,3 @@ Output Example
  'user_id': 'bobama'
 }
 ```
-
