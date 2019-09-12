@@ -8,7 +8,7 @@ class FindFace(EnrichSignals, Block):
 
     upsample = IntProperty(
         title='Numer of Times to Upsample',
-        default=1,
+        default=0,
         advanced=True)
     version = VersionProperty('0.1.0')
 
